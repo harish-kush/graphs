@@ -1,0 +1,45 @@
+// if dfsvisited[padosi] and visited[padosi] is true then cycle detected
+#include <unordered_map>
+#include <list>
+#include <vector>
+using namespace std;
+
+bool checkDFS(int node, unordered_map<int, bool> &visited, unordered_map<int, bool> &dfsVisited, unordered_map<int, list<int>> &adj) {
+    visited[node] = true;
+    dfsVisited[node] = true;
+
+    for (auto padosi : adj[node]) {
+        if (!visited[padosi]) {
+            bool cycleDetection = checkDFS(padosi, visited, dfsVisited, adj);
+            if (cycleDetection)
+                return true;
+        } else if (dfsVisited[padosi])  // No need to check visited[padosi] again
+            return true;
+    }
+
+    dfsVisited[node] = false;
+    return false;
+}
+
+int detectCycleInDirectedGraph(int n, vector<pair<int, int>> &edges) {
+    // Adjacency list
+    unordered_map<int, list<int>> adj;
+    for (auto edge : edges) {
+        int u = edge.first;
+        int v = edge.second;
+        adj[u].push_back(v);
+    }
+
+    // Calling DFS function
+    unordered_map<int, bool> visited;
+    unordered_map<int, bool> dfsVisited;
+    
+    for (int node = 1; node <= n; node++) {
+        if (!visited[node]) {
+            bool cycleDetected = checkDFS(node, visited, dfsVisited, adj);
+            if (cycleDetected)
+                return true;
+        }
+    }
+    return false;
+}
