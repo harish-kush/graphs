@@ -1,0 +1,27 @@
+class Solution {
+public:
+    void f(int i, int j, int color, vector<vector<int>>& image, int ic){
+        if(i < 0 || j < 0 || i >= image.size() || j >= image[0].size()) return;
+
+        if(image[i][j]!=ic) return; // if color of cell is not equal to initial color return 
+
+        image[i][j] = color;
+        // bottom check
+        f(i+1,j,color,image,ic);
+        
+        //left
+        f(i,j-1,color,image,ic);
+        
+        // right
+        f(i,j+1,color,image,ic);
+        
+        // top
+        f(i-1,j,color,image,ic);
+        
+    }
+    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int color) {
+        int ic = image[sr][sc];
+        if(ic!=color) f(sr,sc,color,image,ic); // agr color same h toh kyu faaltu me recursion lgana
+        return image;
+    }
+};
