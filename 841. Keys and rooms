@@ -1,0 +1,21 @@
+class Solution {
+public:
+    bool canVisitAllRooms(vector<vector<int>>& rooms) {
+        // hame adjacency list dii gyi h
+        unordered_set<int>visited;
+        queue<int>q;
+        q.push(0);
+        visited.insert(0);
+        while(!q.empty()){
+            int curr = q.front();
+            q.pop();
+            for(int padosi: rooms[curr]){
+                if(visited.count(padosi)==0){
+                    q.push(padosi);
+                    visited.insert(padosi);
+                }
+            }
+        }
+        return rooms.size()==visited.size();
+    }
+};
